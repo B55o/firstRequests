@@ -10,7 +10,7 @@ while do == "yes":
 
     question = input("would you like to get a country list? y/n: \n")
     if question == "y":
-        firstLetter = input("podaj pierwszą literę szukanego panstwa:")
+        firstLetter = input("write first letter:")
         rList = requests.get(baseUrl)
         jsonChoice = rList.json()
         choiceList = []
