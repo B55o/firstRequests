@@ -2,24 +2,29 @@ import requests
 
 baseUrl = "https://restcountries.eu/rest/v2/"
 
-do = "yes"
-while do == "yes":
+do = True
+while do:
     print("what info would you like to have :\n")
-    print("1 Population \n2 Languages \n3 Timezones\n")
-    choice = int(input("-->"))
+    choice = int(input("1 Population \n2 Languages \n3 Timezones\n-->"))
 
     question = input("would you like to get a country list? y/n: \n")
+
     if question == "y":
-        firstLetter = input("write first letter:")
         rList = requests.get(baseUrl)
-        jsonChoice = rList.json()
+        rListJson = rList.json()
         choiceList = []
-        counter = 0
-        for c in jsonChoice:
+        for c in rListJson:
             choiceList.append(c["name"])
-        for country in choiceList:
-            if country[0] == firstLetter:
-                print(country)
+        # print(choiceList)
+        counter = 0
+        firstLetter = input("write first letter:")
+        while len(firstLetter) != 1:
+            firstLetter = input("write ONLY first letter:")
+        else:
+            for element in choiceList:
+                if element[0] == firstLetter:
+                    print(element)
+
     countryChoice = input("what country you want that information for? \n")
 
     params = {"fields": "population;languages;timezones", "fullText": "true"}
@@ -34,12 +39,13 @@ while do == "yes":
     elif choice == 2:
         langList = []
         for lang in countryChoice["languages"]:
-            langList.append(lang["nativeName"])
-        print(f"native language: {''.join(langList)}")
+            langList.append(lang["name"])
+        print(f"native language: {', '.join(langList)}")
     else:
         timezones = countryChoice["timezones"]
 
-        print(f"timezones: {timezones}")
+        print(f"timezones: ", "\n--> ".join(timezones))
     end = input("want more info? y/n\n")
     if end != "y":
-        break
+        do = False
+        #break
